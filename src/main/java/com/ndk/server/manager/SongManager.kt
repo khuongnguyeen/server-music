@@ -7,10 +7,32 @@ import org.springframework.stereotype.Component
 @Component
 open class SongManager {
     fun searchSong(songName:String?,pageNumber:Int):Any{
-        return if (songName != null||songName.equals("")) {
+        return if (songName == null|| songName == "") {
             searchMusic("",pageNumber,"https://chiasenhac.vn/mp3/vietnam.html?tab=bai-hat-moi&page={1}")
         }else{
-            searchMusic("",pageNumber,"https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter=")
+            searchMusic(songName,pageNumber,"https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter=")
+        }
+    }
+
+    fun searchSongs(songName:String?):Any{
+        return if (songName == null|| songName == "") {
+
+            val listMusic = mutableListOf<MusicOnline>()
+            var k = 1
+            for(i in 0..30){
+                listMusic.addAll(searchMusic("",k,"https://chiasenhac.vn/mp3/vietnam.html?tab=bai-hat-moi&page={1}"))
+                k++
+            }
+            listMusic
+        }else{
+            val listMusic = mutableListOf<MusicOnline>()
+            var k = 1
+            for(i in 0..30){
+                listMusic.addAll(searchMusic(songName, k,"https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter="))
+                k++
+            }
+            listMusic
+
         }
     }
 
@@ -23,7 +45,7 @@ open class SongManager {
         val link = linkOrigin
             .replace("{0}", newName)
             .replace("{1}", page.toString())
-            .replace(" ", "%20")
+            .replace(" ", "+")
         val listMusic = mutableListOf<MusicOnline>()
         val doc = Jsoup.connect(link).get()
         for (element in doc.selectFirst("div.tab-content").select("li.media")) {

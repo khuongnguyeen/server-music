@@ -18,4 +18,18 @@ open class SongController {
     ): Any {
         return songManager.searchSong(songName,pageNumber)
     }
+
+
+    @GetMapping("/api/searchSongs")
+    fun searchSongs(
+        @RequestParam("songName", required = false) songName: String?
+    ): Any {
+        return songManager.searchSongs(songName)
+    }
+
+
+
+
+
+
 }
