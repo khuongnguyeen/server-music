@@ -23,7 +23,7 @@ open class SongManager {
         val link = linkOrigin
             .replace("{0}", newName)
             .replace("{1}", page.toString())
-            .replace(" ", "%20"
+            .replace(" ", "%20")
         val listMusic = mutableListOf<MusicOnline>()
         val doc = Jsoup.connect(link).get()
         for (element in doc.selectFirst("div.tab-content").select("li.media")) {
