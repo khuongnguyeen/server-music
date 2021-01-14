@@ -28,6 +28,10 @@ open class SongController {
     }
 
 
+    @GetMapping("")
+    fun searchS(): Any {
+        return "Hello World !!!"
+    }
 
 
 
