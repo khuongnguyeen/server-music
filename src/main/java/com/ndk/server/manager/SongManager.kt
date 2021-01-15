@@ -59,9 +59,10 @@ open class SongManager {
                     element.selectFirst("div.media-left").selectFirst("a").selectFirst("img")
                         .attr("src")
                 val artist = element.selectFirst("div.author").text()
+                val linkMusic = getLinkMusic(linkHtml = linkHtml)
                 listMusic.add(
                     MusicOnline(
-                        title, artist, linkHtml, linkImage,id = linkHtml
+                        title, artist, linkHtml, linkImage,id = linkHtml,linkMusic = linkMusic
                     )
                 )
             } catch (e: Exception) {
@@ -72,6 +73,22 @@ open class SongManager {
         return listMusic
 
     }
+
+     private fun getLinkMusic(linkHtml: String): String? {
+        val doc = Jsoup.connect(linkHtml).get()
+        val els = doc.select("div.tab-content")
+        for (e in els.first().select("ul.list-unstyled")
+            .first().select("a.download_item")) {
+            val link = e.attr("href")
+            if (link.contains(".mp3")) {
+                return link
+            }
+        }
+
+        return null
+    }
+
+
 
 
 }

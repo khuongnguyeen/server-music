@@ -27,13 +27,9 @@ open class SongController {
         return songManager.searchSongs(songName)
     }
 
-
     @GetMapping("")
     fun searchS(): Any {
         return "Hello World !!!"
     }
-
-
-
 
 }
