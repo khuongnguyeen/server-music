@@ -65,12 +65,14 @@ open class SongManager {
                 var lyric:String? = null
                 val doc2 = Jsoup.connect(linkHtml).get()
                 val els = doc2.select("div.tab-content")
+                var link2 :String? = null
                 for (e in els.first().select("ul.list-unstyled")
                     .first().select("a.download_item")) {
-                    val link = e.attr("href")
-                    if (link.contains(".mp3")) {
-                        linkMusic = link
+                     link2 = e.attr("href")
+                    if (link2.contains(".mp3")) {
+                        linkMusic = link2
                     }
+
                 }
 
                 for (e in els.first().select("div.tab-pane")
