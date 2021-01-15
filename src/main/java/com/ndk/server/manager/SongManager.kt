@@ -68,9 +68,9 @@ open class SongManager {
                 for (e in els.first().select("ul.list-unstyled")
                     .first().select("a.download_item")) {
                     val link = e.attr("href")
-                    if (link.contains(".mp3")) {
+//                    if (link.contains(".mp3")) {
                         linkMusic = link
-                    }
+//                    }
                 }
 
                 listMusic.add(
