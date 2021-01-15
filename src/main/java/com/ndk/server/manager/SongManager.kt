@@ -19,7 +19,7 @@ open class SongManager {
 
             val listMusic = mutableListOf<MusicOnline>()
             var k = 1
-            for(i in 0..30){
+            for(i in 0..3){
                 listMusic.addAll(searchMusic("",k,"https://chiasenhac.vn/mp3/vietnam.html?tab=bai-hat-moi&page={1}"))
                 k++
             }
@@ -27,7 +27,7 @@ open class SongManager {
         }else{
             val listMusic = mutableListOf<MusicOnline>()
             var k = 1
-            for(i in 0..30){
+            for(i in 0..3){
                 listMusic.addAll(searchMusic(songName, k,"https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter="))
                 k++
             }
@@ -59,7 +59,7 @@ open class SongManager {
                     element.selectFirst("div.media-left").selectFirst("a").selectFirst("img")
                         .attr("src")
                 val artist = element.selectFirst("div.author").text()
-                val linkMusic = getLinkMusic(linkHtml = linkHtml)
+                val linkMusic = getLinkMusic(linkHtml)
                 listMusic.add(
                     MusicOnline(
                         title, artist, linkHtml, linkImage,id = linkHtml,linkMusic = linkMusic
@@ -85,7 +85,7 @@ open class SongManager {
             }
         }
 
-        return "Anh khuong"
+        return null
     }
 
 
