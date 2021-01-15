@@ -4,7 +4,6 @@ import com.ndk.server.model.MusicOnline
 import org.jsoup.Jsoup
 import org.springframework.stereotype.Component
 
-@Suppress("NAME_SHADOWING")
 @Component
 open class SongManager {
     fun searchSong(songName:String?,pageNumber:Int):Any{
@@ -60,19 +59,7 @@ open class SongManager {
                     element.selectFirst("div.media-left").selectFirst("a").selectFirst("img")
                         .attr("src")
                 val artist = element.selectFirst("div.author").text()
-
-                var linkMusic :String?= null
-
-                val doc2 = Jsoup.connect(linkHtml).get()
-                val els = doc2.select("div.tab-content")
-                for (e in els.first().select("ul.list-unstyled")
-                    .first().select("a.download_item")) {
-                    val link = e.attr("href")
-//                    if (link.contains(".mp3")) {
-                        linkMusic = link
-//                    }
-                }
-
+                val linkMusic = getLinkMusic(linkHtml)
                 listMusic.add(
                     MusicOnline(
                         title, artist, linkHtml, linkImage,id = linkHtml,linkMusic = linkMusic
