@@ -67,9 +67,7 @@ open class SongManager {
                     .first().select("a.download_item")) {
                      link2 = e.attr("href")
                     if (link2.contains(".mp3")) {
-                        while (link2!!.contains("%20")) link2 = link2.replace("%20", "+").trim()
-                            linkMusic = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$link2"
-
+                        linkMusic = "$link2"
                     }
                 }
                 for (e in els.first().select("div.tab-pane")
