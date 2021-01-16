@@ -33,15 +33,13 @@ open class SongManager {
                 k++
             }
             listMusic
+
         }
     }
 
     private fun searchMusic(songName: String, page: Int = 1, linkOrigin:String): MutableList<MusicOnline> {
         var newName = songName
-        while (newName.contains("  ")) {
-            newName = newName.replace("  ", " ")
-        }
-        newName = newName.trim()
+        while (newName.contains("  ")) newName = newName.replace("  ", " ").trim()
         val link = linkOrigin
             .replace("{0}", newName)
             .replace("{1}", page.toString())
@@ -59,18 +57,23 @@ open class SongManager {
                     element.selectFirst("div.media-left").selectFirst("a").selectFirst("img")
                         .attr("src")
                 val artist = element.selectFirst("div.author").text()
+
                 var linkMusic:String? = null
                 var lyric:String? = null
                 val doc2 = Jsoup.connect(linkHtml).get()
                 val els = doc2.select("div.tab-content")
                 var link2 :String? = null
+                val list = mutableListOf<String>()
                 for (e in els.first().select("ul.list-unstyled")
                     .first().select("a.download_item")) {
                      link2 = e.attr("href")
-                    if (link2.contains(".mp3")) {
-                        linkMusic = link2
-                    }
+//                    if (link2.contains(".mp3")) {
+                        list.add(link2)
+
+//                    }
+
                 }
+                linkMusic = list[1]
                 for (e in els.first().select("div.tab-pane")
                     .first().select("article")) {
                     lyric = e.select("div#fulllyric").text()
@@ -82,8 +85,10 @@ open class SongManager {
                     )
                 )
             } catch (e: Exception) {
+
             }
         }
+
         return listMusic
 
     }
@@ -98,6 +103,11 @@ open class SongManager {
                 return link
             }
         }
+
         return null
     }
+
+
+
+
 }
