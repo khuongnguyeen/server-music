@@ -68,7 +68,7 @@ open class SongManager {
                      link2 = e.attr("href")
                     if (link2.contains(".mp3")) {
                         while (link2!!.contains("%20")) link2 = link2.replace("%20", "+").trim()
-                            linkMusic = "$link2"
+                            linkMusic = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa$link2"
 
                     }
                 }
