@@ -33,7 +33,6 @@ open class SongManager {
                 k++
             }
             listMusic
-
         }
     }
 
@@ -60,7 +59,6 @@ open class SongManager {
                     element.selectFirst("div.media-left").selectFirst("a").selectFirst("img")
                         .attr("src")
                 val artist = element.selectFirst("div.author").text()
-
                 var linkMusic:String? = null
                 var lyric:String? = null
                 val doc2 = Jsoup.connect(linkHtml).get()
@@ -72,9 +70,7 @@ open class SongManager {
                     if (link2.contains(".mp3")) {
                         linkMusic = link2
                     }
-
                 }
-
                 for (e in els.first().select("div.tab-pane")
                     .first().select("article")) {
                     lyric = e.select("div#fulllyric").text()
@@ -86,15 +82,13 @@ open class SongManager {
                     )
                 )
             } catch (e: Exception) {
-
             }
         }
-
         return listMusic
 
     }
 
-     private fun getLinkMusic(linkHtml: String): String? {
+    fun getLinkMusic(linkHtml: String): String? {
         val doc = Jsoup.connect(linkHtml).get()
         val els = doc.select("div.tab-content")
         for (e in els.first().select("ul.list-unstyled")
@@ -104,11 +98,6 @@ open class SongManager {
                 return link
             }
         }
-
         return null
     }
-
-
-
-
 }
