@@ -58,23 +58,18 @@ open class SongManager {
                         .attr("src")
                 val artist = element.selectFirst("div.author").text()
                 var linkMusic:String? = null
-                var lyric:String? = null
-                val doc2 = Jsoup.connect(linkHtml).get()
-                val els = doc2.select("div.tab-content")
-                var link2 :String? = null
-                for (e in els.first().select("ul.list-unStyled".toLowerCase())
-                    .first().select("a.download_item")) {
-                     link2 = e.attr("href")
-                    if (link2.contains(".mp3")) {
-                        linkMusic = "-----------------------------------------------"
-                    }
-                }
-                for (e in els.first().select("div.tab-pane")
-                    .first().select("article")) {
-                    lyric = e.select("div#fulllyric").text()
-                }
+                val lyric = getLyrics(linkHtml)
 
-//                lyric = getLyrics(lyric)
+//                var link2 :String? = null
+//                for (e in els.first().select("ul.list-unStyled".toLowerCase())
+//                    .first().select("a.download_item")) {
+//                     link2 = e.attr("href")
+//                    if (link2.contains(".mp3")) {
+//                        linkMusic = "-----------------------------------------------"
+//                    }
+//                }
+
+
                 listMusic.add(
                     MusicOnline(
                         title, artist, linkHtml, linkImage,id = linkHtml,linkMusic = linkMusic,lyric = lyric
@@ -86,28 +81,31 @@ open class SongManager {
         return listMusic
     }
 
-    private fun getLyrics(lyric :String?):String{
-        if(lyric == null) return "Không có lời bài hát !!!!!!!!!"
-        var s = ""
-        val array: List<String> = lyric.split(Regex("(?=\\p{Upper})"))
-        for(i in 0..array.size){
-            s += array[i] +"\n"
-        }
-        return s
-    }
+//    private fun getLyrics(lyric :String?):String{
+//        if(lyric == null) return "Không có lời bài hát !!!!!!!!!"
+//        var s = ""
+//        val array: List<String> = lyric.split(Regex("(?=\\p{Upper})"))
+//        for(i in 0..array.size){
+//            s += array[i] +"\n"
+//        }
+//        return s
+//    }
 
-    fun getLinkMusic(linkHtml: String): String? {
+    private fun getLyrics(linkHtml: String): String {
         val doc = Jsoup.connect(linkHtml).get()
+        var link =""
         val els = doc.select("div.tab-content")
-        for (e in els.first().select("ul.list-unstyled")
-            .first().select("a.download_item")) {
-            val link = e.attr("href")
-            if (link.contains(".mp3")) {
-                return link
-            }
+        for (e in els.first().select("div.tab-pane")
+            .first().select("article")) {
+             link  = e.select("div#fulllyric").text()
         }
+        val array: List<String> = link.split(Regex("(?=\\p{Upper})"))
+        link =""
+        for(element in array){
+            link += element +"\n"
+        }
+                return link
 
-        return null
     }
 
 

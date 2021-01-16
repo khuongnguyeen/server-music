@@ -26,12 +26,7 @@ open class SongController {
     ): Any {
         return songManager.searchSongs(songName)
     }
-    @GetMapping("/api/getLinkMusic")
-    fun getLinkMusic(
-        @RequestParam("linkHtml", required = false) linkHtml: String
-    ): Any {
-        return songManager.getLinkMusic(linkHtml)!!
-    }
+
 
     @GetMapping("")
     fun searchS(): Any {
