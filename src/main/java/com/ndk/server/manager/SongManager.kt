@@ -63,34 +63,26 @@ open class SongManager {
                 val doc2 = Jsoup.connect(linkHtml).get()
                 val els = doc2.select("div.tab-content")
                 var link2 :String? = null
-                val list = mutableListOf<String>()
                 for (e in els.first().select("ul.list-unstyled")
                     .first().select("a.download_item")) {
                      link2 = e.attr("href")
-//                    if (link2.contains(".mp3")) {
-                        list.add(link2)
-
-//                    }
-
+                    if (link2.contains(".mp3")) {
+                        linkMusic = link2
+                    }
                 }
-                linkMusic = list[1]
                 for (e in els.first().select("div.tab-pane")
                     .first().select("article")) {
                     lyric = e.select("div#fulllyric").text()
                 }
-
                 listMusic.add(
                     MusicOnline(
                         title, artist, linkHtml, linkImage,id = linkHtml,linkMusic = linkMusic,lyric = lyric
                     )
                 )
             } catch (e: Exception) {
-
             }
         }
-
         return listMusic
-
     }
 
     fun getLinkMusic(linkHtml: String): String? {
