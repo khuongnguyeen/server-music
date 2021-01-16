@@ -90,21 +90,16 @@ open class SongManager {
         for (e in els.first().select("ul.list-unstyled")
             .first().select("a.download_item")) {
             val link = e.attr("href")
-            s = "ôi bạn ơi !!!!!!!! $link"
             if (link.contains(".mp3")) {
                 s = link
             }
 
         }
-
-//            link  = e.select("div#fulllyric").text()
-
-
         if(s != null){
             val array: List<String> = s.split("/")
             s = ""
             for(element in array){
-                s += element +"     "
+                s += element +"___"
             }
         }
 
