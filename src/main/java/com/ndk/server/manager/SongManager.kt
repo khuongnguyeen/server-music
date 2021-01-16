@@ -57,7 +57,7 @@ open class SongManager {
                     element.selectFirst("div.media-left").selectFirst("a").selectFirst("img")
                         .attr("src")
                 val artist = element.selectFirst("div.author").text()
-                val linkMusic:String? = null
+                val linkMusic:String? = getLinkMusic(linkHtml)
                 val lyric = getLyrics(linkHtml)
 //                val doc2 = Jsoup.connect(linkHtml).get()
 //                val els = doc2.select("div.tab-content")
@@ -83,7 +83,19 @@ open class SongManager {
         return listMusic
     }
 
-
+    private fun getLinkMusic(linkHtml: String): String? {
+        val doc = Jsoup.connect(linkHtml).get()
+        val els = doc.select("div.tab-content")
+        var s:String?=null
+        for (e in els.first().select("ul.list-unstyled")
+            .first().select("a.download_item")) {
+            val link = e.attr("href")
+            if (link.contains(".mp3")) {
+                s = link
+            }
+        }
+        return s
+    }
 
     private fun getLyrics(linkHtml: String): String {
         val doc = Jsoup.connect(linkHtml).get()
