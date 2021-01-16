@@ -57,7 +57,6 @@ open class SongManager {
                     element.selectFirst("div.media-left").selectFirst("a").selectFirst("img")
                         .attr("src")
                 val artist = element.selectFirst("div.author").text()
-
                 var linkMusic:String? = null
                 var lyric:String? = null
                 val doc2 = Jsoup.connect(linkHtml).get()
@@ -67,13 +66,12 @@ open class SongManager {
                     .first().select("a.download_item")) {
                      link2 = e.attr("href")
                     if (link2.contains(".mp3")) {
-                        linkMusic = "$link2"
+                        linkMusic = "-----------------------------------------------"
                     }
                 }
                 for (e in els.first().select("div.tab-pane")
                     .first().select("article")) {
                     lyric = e.select("div#fulllyric").text()
-
                 }
 
 //                lyric = getLyrics(lyric)
