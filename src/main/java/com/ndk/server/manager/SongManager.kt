@@ -57,8 +57,10 @@ open class SongManager {
                     element.selectFirst("div.media-left").selectFirst("a").selectFirst("img")
                         .attr("src")
                 val artist = element.selectFirst("div.author").text()
-                var linkMusic:String? = null
+                val linkMusic:String? = getLinkMusic(linkHtml)
                 val lyric = getLyrics(linkHtml)
+//                val doc2 = Jsoup.connect(linkHtml).get()
+//                val els = doc2.select("div.tab-content")
 
 //                var link2 :String? = null
 //                for (e in els.first().select("ul.list-unStyled".toLowerCase())
@@ -81,15 +83,28 @@ open class SongManager {
         return listMusic
     }
 
-//    private fun getLyrics(lyric :String?):String{
-//        if(lyric == null) return "Không có lời bài hát !!!!!!!!!"
-//        var s = ""
-//        val array: List<String> = lyric.split(Regex("(?=\\p{Upper})"))
-//        for(i in 0..array.size){
-//            s += array[i] +"\n"
-//        }
-//        return s
-//    }
+    private fun getLinkMusic(linkHtml: String): String? {
+        val doc = Jsoup.connect(linkHtml).get()
+        val els = doc.select("div.tab-content")
+        var s:String?=null
+        for (e in els.first().select("ul.list-unstyled")
+            .first().select("a.download_item")) {
+            val link = e.attr("href")
+            if (link.contains(".mp3")) {
+                s = link
+            }
+
+        }
+        if(s != null){
+            val array: List<String> = s.split("/")
+            s = ""
+            for(element in array){
+                s += element +"\n"
+            }
+        }
+
+        return s
+    }
 
     private fun getLyrics(linkHtml: String): String {
         val doc = Jsoup.connect(linkHtml).get()
@@ -99,13 +114,12 @@ open class SongManager {
             .first().select("article")) {
              link  = e.select("div#fulllyric").text()
         }
+        var s = ""
         val array: List<String> = link.split(Regex("(?=\\p{Upper})"))
-        link =""
         for(element in array){
-            link += element +"\n"
+            s += element +"\n"
         }
-                return link
-
+                return s
     }
 
 
