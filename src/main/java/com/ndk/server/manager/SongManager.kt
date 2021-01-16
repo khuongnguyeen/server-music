@@ -7,29 +7,35 @@ import org.springframework.stereotype.Component
 @Suppress("NAME_SHADOWING")
 @Component
 open class SongManager {
-    fun searchSong(songName:String?,pageNumber:Int):Any{
-        return if (songName == null|| songName == "") {
-            searchMusic("",pageNumber,"https://chiasenhac.vn/mp3/vietnam.html?tab=bai-hat-moi&page={1}")
-        }else{
-            searchMusic(songName,pageNumber,"https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter=")
+    fun searchSong(songName: String?, pageNumber: Int): Any {
+        return if (songName == null || songName == "") {
+            searchMusic("", pageNumber, "https://chiasenhac.vn/mp3/vietnam.html?tab=bai-hat-moi&page={1}")
+        } else {
+            searchMusic(songName, pageNumber, "https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter=")
         }
     }
 
-    fun searchSongs(songName:String?):Any{
-        return if (songName == null|| songName == "") {
+    fun searchSongs(songName: String?): Any {
+        return if (songName == null || songName == "") {
 
             val listMusic = mutableListOf<MusicOnline>()
             var k = 1
-            for(i in 0..3){
-                listMusic.addAll(searchMusic("",k,"https://chiasenhac.vn/mp3/vietnam.html?tab=bai-hat-moi&page={1}"))
+            for (i in 0..3) {
+                listMusic.addAll(searchMusic("", k, "https://chiasenhac.vn/mp3/vietnam.html?tab=bai-hat-moi&page={1}"))
                 k++
             }
             listMusic
-        }else{
+        } else {
             val listMusic = mutableListOf<MusicOnline>()
             var k = 1
-            for(i in 0..3){
-                listMusic.addAll(searchMusic(songName, k,"https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter="))
+            for (i in 0..3) {
+                listMusic.addAll(
+                    searchMusic(
+                        songName,
+                        k,
+                        "https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter="
+                    )
+                )
                 k++
             }
             listMusic
@@ -37,7 +43,7 @@ open class SongManager {
         }
     }
 
-    private fun searchMusic(songName: String, page: Int = 1, linkOrigin:String): MutableList<MusicOnline> {
+    private fun searchMusic(songName: String, page: Int = 1, linkOrigin: String): MutableList<MusicOnline> {
         var newName = songName
         while (newName.contains("  ")) newName = newName.replace("  ", " ").trim()
         val link = linkOrigin
@@ -57,7 +63,7 @@ open class SongManager {
                     element.selectFirst("div.media-left").selectFirst("a").selectFirst("img")
                         .attr("src")
                 val artist = element.selectFirst("div.author").text()
-                val linkMusic:String? = getLinkMusic(linkHtml)
+                val linkMusic: String? = null // getLinkMusic(linkHtml)
                 val lyric = getLyrics(linkHtml)
 //                val doc2 = Jsoup.connect(linkHtml).get()
 //                val els = doc2.select("div.tab-content")
@@ -70,11 +76,9 @@ open class SongManager {
 //                        linkMusic = "-----------------------------------------------"
 //                    }
 //                }
-
-
                 listMusic.add(
                     MusicOnline(
-                        title, artist, linkHtml, linkImage,id = linkHtml,linkMusic = linkMusic,lyric = lyric
+                        title, artist, linkHtml, linkImage, id = linkHtml, linkMusic = linkMusic, lyric = lyric
                     )
                 )
             } catch (e: Exception) {
@@ -83,37 +87,39 @@ open class SongManager {
         return listMusic
     }
 
-    private fun getLinkMusic(linkHtml: String): String? {
+//    private fun getLinkMusic(linkHtml: String): String? {
+//        val doc = Jsoup.connect(linkHtml).get()
+//        val els = doc.select("div.tab-content")
+//        var s: String? = null
+//        for (e in els.first().select("ul.list-unstyled")
+//            .first().select("a.download_item")) {
+//            val link = e.attr("href")
+//            if (link.contains(".mp3")) {
+//                s = link
+//            }
+//        }
+//        return s
+//    }
+
+    private fun getLyrics(linkHtml: String): String {
         val doc = Jsoup.connect(linkHtml).get()
+        var link = ""
         val els = doc.select("div.tab-content")
-        var s:String?=null
-        for (e in els.first().select("ul.list-unstyled")
-            .first().select("a.download_item")) {
-            val link = e.attr("href")
-            if (link.contains(".mp3")) {
-                s = link
+        for (e in els.first().select("div.tab-pane")
+            .first().select("article")) {
+            link = e.select("div#fulllyric").text()
+        }
+        var s = ""
+        val array: List<String> = link.split(Regex("(?=\\p{Upper})"))
+        for (element in array) {
+            s += if (element.length <= 5) {
+                element
+            } else {
+                element + "\n"
             }
         }
         return s
     }
-
-    private fun getLyrics(linkHtml: String): String {
-        val doc = Jsoup.connect(linkHtml).get()
-        var link =""
-        val els = doc.select("div.tab-content")
-        for (e in els.first().select("div.tab-pane")
-            .first().select("article")) {
-             link  = e.select("div#fulllyric").text()
-        }
-        var s = ""
-        val array: List<String> = link.split(Regex("(?=\\p{Upper})"))
-        for(element in array){
-            s += element +"\n"
-        }
-                return s
-    }
-
-
 
 
 }
