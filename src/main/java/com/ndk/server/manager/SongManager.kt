@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 open class SongManager {
     fun searchSong(songName: String?, pageNumber: Int): Any {
         return if (songName == null || songName == "") {
-            searchMusic("", pageNumber, "https://chiasenhac.vn/nhac-hot.html&page={1}")
+            searchMusic("", pageNumber, "https://chiasenhac.vn/mp3/us-uk.html?tab=bai-hat-moi&page={1}")
         } else {
             searchMusic(songName, pageNumber, "https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter=")
         }
