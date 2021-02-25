@@ -43,7 +43,7 @@ open class SongManager {
                 val id = (0..5).random()
                 listMusic.add(
                     MusicOnline(
-                        title, artist, linkHtml, linkImage, id = id.toString(), linkMusic = linkMusic, lyric = lyric
+                        title, artist, linkHtml, linkImage, id = id, linkMusic = linkMusic, lyric = lyric
                     )
                 )
             } catch (e: Exception) {
