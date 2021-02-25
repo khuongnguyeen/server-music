@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 open class SongManager {
     fun searchSong(songName: String?, pageNumber: Int): Any {
         return if (songName == null || songName == "") {
-            searchMusic("", pageNumber, "https://chiasenhac.vn/mp3/vietnam.html?tab=bai-hat-moi&page={1}")
+            searchMusic("", pageNumber, "https://chiasenhac.vn/nhac-hot.html&page={1}")
         } else {
             searchMusic(songName, pageNumber, "https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter=")
         }
@@ -21,7 +21,7 @@ open class SongManager {
             val listMusic = mutableListOf<MusicOnline>()
             var k = 1
             for (i in 0..3) {
-                listMusic.addAll(searchMusic("", k, "https://chiasenhac.vn/mp3/vietnam.html?tab=bai-hat-moi&page={1}"))
+                listMusic.addAll(searchMusic("", k, "https://chiasenhac.vn/nhac-hot.html&page={1}"))
                 k++
             }
             listMusic
@@ -59,15 +59,17 @@ open class SongManager {
                     linkHtml = "https://vi.chiasenhac.vn$linkHtml"
                 }
                 val title = element.selectFirst("div.media-left").selectFirst("a").attr("title")
-                val linkImage =
+                val linkImage2 =
                     element.selectFirst("div.media-left").selectFirst("a").selectFirst("img")
                         .attr("src")
+                val linkImage = linkImage2.replace("cover_thumb", "cover")
                 val artist = element.selectFirst("div.author").text()
                 val linkMusic: String? = null // getLinkMusic(linkHtml)
                 val lyric = getLyrics(linkHtml)
 //                val doc2 = Jsoup.connect(linkHtml).get()
 //                val els = doc2.select("div.tab-content")
-
+//data.chiasenhac.com/data/cover_thumb/135/134723.jpg
+                //data.chiasenhac.com/data/cover/135/134723.jpg
 //                var link2 :String? = null
 //                for (e in els.first().select("ul.list-unStyled".toLowerCase())
 //                    .first().select("a.download_item")) {
