@@ -15,33 +15,7 @@ open class SongManager {
         }
     }
 
-    fun searchSongs(songName: String?): Any {
-        return if (songName == null || songName == "") {
 
-            val listMusic = mutableListOf<MusicOnline>()
-            var k = 1
-            for (i in 0..3) {
-                listMusic.addAll(searchMusic("", k, "https://chiasenhac.vn/nhac-hot.html&page={1}"))
-                k++
-            }
-            listMusic
-        } else {
-            val listMusic = mutableListOf<MusicOnline>()
-            var k = 1
-            for (i in 0..3) {
-                listMusic.addAll(
-                    searchMusic(
-                        songName,
-                        k,
-                        "https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter="
-                    )
-                )
-                k++
-            }
-            listMusic
-
-        }
-    }
 
     private fun searchMusic(songName: String, page: Int = 1, linkOrigin: String): MutableList<MusicOnline> {
         var newName = songName
@@ -64,23 +38,12 @@ open class SongManager {
                         .attr("src")
                 val linkImage = linkImage2.replace("cover_thumb", "cover")
                 val artist = element.selectFirst("div.author").text()
-                val linkMusic: String? = null // getLinkMusic(linkHtml)
+                val linkMusic: String? = null
                 val lyric = getLyrics(linkHtml)
-//                val doc2 = Jsoup.connect(linkHtml).get()
-//                val els = doc2.select("div.tab-content")
-//data.chiasenhac.com/data/cover_thumb/135/134723.jpg
-                //data.chiasenhac.com/data/cover/135/134723.jpg
-//                var link2 :String? = null
-//                for (e in els.first().select("ul.list-unStyled".toLowerCase())
-//                    .first().select("a.download_item")) {
-//                     link2 = e.attr("href")
-//                    if (link2.contains(".mp3")) {
-//                        linkMusic = "-----------------------------------------------"
-//                    }
-//                }
+                val id = (0..5).random()
                 listMusic.add(
                     MusicOnline(
-                        title, artist, linkHtml, linkImage, id = linkHtml, linkMusic = linkMusic, lyric = lyric
+                        title, artist, linkHtml, linkImage, id = id.toString(), linkMusic = linkMusic, lyric = lyric
                     )
                 )
             } catch (e: Exception) {
@@ -88,20 +51,6 @@ open class SongManager {
         }
         return listMusic
     }
-
-//    private fun getLinkMusic(linkHtml: String): String? {
-//        val doc = Jsoup.connect(linkHtml).get()
-//        val els = doc.select("div.tab-content")
-//        var s: String? = null
-//        for (e in els.first().select("ul.list-unstyled")
-//            .first().select("a.download_item")) {
-//            val link = e.attr("href")
-//            if (link.contains(".mp3")) {
-//                s = link
-//            }
-//        }
-//        return s
-//    }
 
     private fun getLyrics(linkHtml: String): String {
         val doc = Jsoup.connect(linkHtml).get()
