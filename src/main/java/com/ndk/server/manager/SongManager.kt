@@ -9,22 +9,9 @@ import org.springframework.stereotype.Component
 open class SongManager {
     fun searchSong(songName: String?, pageNumber: Int): Any {
         return if (songName == null || songName == "") {
-
-            val listMusic = mutableListOf<MusicOnline>()
-            var k = 1
-            for (i in 0..2) {
-                listMusic.addAll(searchMusic("", k, "https://chiasenhac.vn/nhac-hot.html&page={1}"))
-                k++
-            }
-            listMusic
+            searchMusic("", pageNumber, "https://chiasenhac.vn/mp3/us-uk.html?tab=bai-hat-moi&page={1}")
         } else {
-            val listMusic = mutableListOf<MusicOnline>()
-            var k = 1
-            for (i in 0..2) {
-                listMusic.addAll(searchMusic(songName, k, "https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter="))
-                k++
-            }
-            listMusic
+            searchMusic(songName, pageNumber, "https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter=")
         }
     }
 
@@ -77,6 +64,7 @@ open class SongManager {
         }
         return null
     }
+
 
 //    private fun getLyrics(linkHtml: String): String {
 //        val doc = Jsoup.connect(linkHtml).get()
