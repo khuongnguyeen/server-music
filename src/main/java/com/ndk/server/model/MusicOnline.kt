@@ -8,5 +8,5 @@ data class MusicOnline(
     var linkImage:String?=null,
     var linkMusic:String?=null,
     var lyric:String?=null,
-    val id:Int
+    val id:String
 )

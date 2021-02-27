@@ -9,13 +9,24 @@ import org.springframework.stereotype.Component
 open class SongManager {
     fun searchSong(songName: String?, pageNumber: Int): Any {
         return if (songName == null || songName == "") {
-            searchMusic("", pageNumber, "https://chiasenhac.vn/mp3/us-uk.html?tab=bai-hat-moi&page={1}")
+
+            val listMusic = mutableListOf<MusicOnline>()
+            var k = 1
+            for (i in 0..5) {
+                listMusic.addAll(searchMusic("", k, "https://chiasenhac.vn/nhac-hot.html&page={1}"))
+                k++
+            }
+            listMusic
         } else {
-            searchMusic(songName, pageNumber, "https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter=")
+            val listMusic = mutableListOf<MusicOnline>()
+            var k = 1
+            for (i in 0..5) {
+                listMusic.addAll(searchMusic(songName, k, "https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter="))
+                k++
+            }
+            listMusic
         }
     }
-
-
 
     private fun searchMusic(songName: String, page: Int = 1, linkOrigin: String): MutableList<MusicOnline> {
         var newName = songName
@@ -38,12 +49,13 @@ open class SongManager {
                         .attr("src")
                 val linkImage = linkImage2.replace("cover_thumb", "cover")
                 val artist = element.selectFirst("div.author").text()
-                val linkMusic: String? = null
-                val lyric = getLyrics(linkHtml)
-                val id = (0..5).random()
+//                val linkMusic: String? = null
+                val linkMusic = getLinkMusic(linkHtml)
+                val otherStrings = arrayOf("Recently Played", "Expert Picks", "People are listening to","Sleep Sounds","Sleep Stories","Sleep Meditation")
+                val id = otherStrings.random()
                 listMusic.add(
                     MusicOnline(
-                        title, artist, linkHtml, linkImage, id = id, linkMusic = linkMusic, lyric = lyric
+                        title, artist, linkHtml, linkImage, id = id, linkMusic = linkMusic
                     )
                 )
             } catch (e: Exception) {
@@ -52,25 +64,38 @@ open class SongManager {
         return listMusic
     }
 
-    private fun getLyrics(linkHtml: String): String {
+    private fun getLinkMusic(linkHtml: String): String? {
         val doc = Jsoup.connect(linkHtml).get()
-        var link = ""
         val els = doc.select("div.tab-content")
-        for (e in els.first().select("div.tab-pane")
-            .first().select("article")) {
-            link = e.select("div#fulllyric").text()
-        }
-        var s = ""
-        val array: List<String> = link.split(Regex("(?=\\p{Upper})"))
-        for (element in array) {
-            s += if (element.length <= 5) {
-                element
-            } else {
-                element + "\n"
+        for (e in els.first().select("ul.list-unstyled")
+            .first().select("a.download_item")) {
+            val link = e.attr("href")
+            if (link.contains(".mp3")) {
+                return link
             }
         }
-        return s
+        return null
     }
+
+//    private fun getLyrics(linkHtml: String): String {
+//        val doc = Jsoup.connect(linkHtml).get()
+//        var link = ""
+//        val els = doc.select("div.tab-content")
+//        for (e in els.first().select("div.tab-pane")
+//            .first().select("article")) {
+//            link = e.select("div#fulllyric").text()
+//        }
+//        var s = ""
+//        val array: List<String> = link.split(Regex("(?=\\p{Upper})"))
+//        for (element in array) {
+//            s += if (element.length <= 5) {
+//                element
+//            } else {
+//                element + "\n"
+//            }
+//        }
+//        return s
+//    }
 
 
 }
