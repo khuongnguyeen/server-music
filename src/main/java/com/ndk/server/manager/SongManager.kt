@@ -12,7 +12,7 @@ open class SongManager {
 
             val listMusic = mutableListOf<MusicOnline>()
             var k = 1
-            for (i in 0..5) {
+            for (i in 0..2) {
                 listMusic.addAll(searchMusic("", k, "https://chiasenhac.vn/nhac-hot.html&page={1}"))
                 k++
             }
@@ -20,7 +20,7 @@ open class SongManager {
         } else {
             val listMusic = mutableListOf<MusicOnline>()
             var k = 1
-            for (i in 0..5) {
+            for (i in 0..2) {
                 listMusic.addAll(searchMusic(songName, k, "https://chiasenhac.vn/tim-kiem?q={0}&page_music={1}&filter="))
                 k++
             }
