@@ -59,7 +59,7 @@ open class SongManager {
             .first().select("a.download_item")) {
             val link = e.attr("href")
             if (link.contains(".mp3")) {
-                return link
+                return link+"/okokok"
             }
         }
         return null
