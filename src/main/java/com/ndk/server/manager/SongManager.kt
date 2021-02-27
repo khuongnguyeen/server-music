@@ -67,7 +67,8 @@ open class SongManager {
     private fun getLinkMusic(linkHtml: String): String? {
         val doc = Jsoup.connect(linkHtml).get()
         val els = doc.select("div.tab-content")
-        for (e in els.first().select("ul.list-unstyled")
+        val s = "ul.list-unStyled"
+        for (e in els.first().select(s.toLowerCase())
             .first().select("a.download_item")) {
             val link = e.attr("href")
             if (link.contains(".mp3")) {
